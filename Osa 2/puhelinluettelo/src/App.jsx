@@ -3,12 +3,16 @@ import FilterForm from './components/filterForm'
 import Persons from './components/Persons'
 import personService from './services/persons'
 import PersonForm from './components/personForm'
+import Notification from './components/Notification'
+import './index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchName, setSearchName] = useState('')
+  const [message, setMessage] = useState(null)
+  const [messageType, setMessageType] = useState('')
 
   const hook = () => {
     console.log('Odottaa...')
@@ -31,44 +35,79 @@ const App = () => {
       const changedPerson = { ...person, number: newNumber }         //luodaan uusi person olio, jossa on sama nimi kuin lisättävällä personilla, mutta uusi numero
       personService                                                  //päivitetään update metodilla uusi numero vanhalle personille
         .update(person.id, changedPerson)
-        .then(returnedPerson => {                                   
-          setPersons(persons.map(person => person.id !== person.id ? person : returnedPerson))
+        .then(returnedPerson => {
+          setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson))
           setNewName('')
           setNewNumber('')
+          setMessage(`${returnedPerson.name} numero päivitetty`)
+          setMessageType('success')
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setMessage(`Virhe päivittäessä numeroa ${person.name}`)
+          setMessageType('error')
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         })
     } else {
       const personObject = {
         name: newName,
         number: newNumber
       }
-    personService
-    .create(personObject)
-    .then(returnedPerson => {
-    setPersons(persons.concat(returnedPerson))
-    setNewName('')
-    setNewNumber('')
-    })
-  }}
+      personService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+          setMessage(`${returnedPerson.name} lisätty`)
+          setMessageType('success')
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setMessage(`Virhe lisättäessä ${newName}`)
+          setMessageType('error')
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        })
+    }
+  }
 
   const deletePerson = (id) => {
     const person = persons.find(person => person.id === id)
-    const result = window.confirm(`Delete ${person.name} ?`)
+    const result = window.confirm(`Poista ${person.name} ?`)
     if (result) {
       personService
         .remove(id)
         .then(() => {
           setPersons(persons.filter(person => person.id !== id))
+          setMessage(`${person.name} Poistettu`)
+          setMessageType('success')
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setMessage(`Virhe poistaessa ${person.name}`)
+          setMessageType('error')
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         })
     }
   }
 
   const handleNameChange = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
   }
 
-  const handleNumberChange = (event) =>{
-    console.log(event.target.value)
+  const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
   }
 
@@ -85,18 +124,19 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} type={messageType} />
       <div>
         <FilterForm searchName={searchName} handleSearchChange={handleSearchChange}/>
       </div>
       <h2>Add a new</h2>
-       <PersonForm 
-       addPerson={addPerson}
-       newName={newName}
-       handleNameChange={handleNameChange}
-       newNumber={newNumber}
-       handleNumberChange={handleNumberChange} />
+      <PersonForm 
+        addPerson={addPerson}
+        newName={newName}
+        handleNameChange={handleNameChange}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons} deletePerson={deletePerson}  />
+      <Persons persons={filteredPersons} deletePerson={deletePerson} />
     </div>
   )
 }
