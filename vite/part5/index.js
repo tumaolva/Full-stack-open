@@ -57,12 +57,6 @@ const requestLogger = (request, response, next) => {
   app.post('/api/notes', (request, response, next) => {
     const body = request.body
   
-    if (!body.content) {
-      return response.status(400).json({ 
-        error: 'content missing' 
-      })
-    }
-  
     const note = new Note({
       content: body.content,
       important: body.important || false,
