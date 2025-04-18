@@ -46,7 +46,9 @@ const App = () => {
           }, 5000)
         })
         .catch(error => {
-          setMessage(`Virhe päivittäessä numeroa ${person.name}`)
+          console.log(error.response.data) //validation error käsittely, kun muokataan henkilön numeroa
+          const errorMessage = error.response.data.error
+          setMessage(errorMessage)
           setMessageType('error')
           setTimeout(() => {
             setMessage(null)
@@ -70,7 +72,9 @@ const App = () => {
           }, 5000)
         })
         .catch(error => {
-          setMessage(`Virhe lisättäessä ${newName}`)
+          console.log(error.response.data)
+          const errorMessage = error.response.data.error
+          setMessage(errorMessage)
           setMessageType('error')
           setTimeout(() => {
             setMessage(null)
