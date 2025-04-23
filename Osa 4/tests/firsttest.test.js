@@ -10,54 +10,54 @@ test('dummy returns one', () => {
 })
 
 describe('total likes', () => {
-    const listWithOneBlog = [
-      {
-        _id: '5a422aa71b54a676234d17f8',
-        title: 'Go To Statement Considered Harmful',
-        author: 'Edsger W. Dijkstra',
-        url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-        likes: 5,
-        __v: 0
-      }
-    ]
+  const listWithOneBlog = [
+    {
+      _id: '5a422aa71b54a676234d17f8',
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+      likes: 5,
+      __v: 0
+    }
+  ]
 
-    const listWithNoBlogs = []
+  const listWithNoBlogs = []
 
 
-    const listWithManyBlogs = [
-        {_id: '5a422aa71b54a676234d17f8',
-            title: 'Go To Statement Considered Harmful',
-            author: 'Edsger W. Dijkstra',
-            url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-            likes: 10,
-            __v: 0},
-        {_id: '5a422aa71b54a676234d17f8',
-            title: 'Go To Statement Considered Harmful',
-            author: 'Edsger W. Dijkstra',
-            url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-            likes: 0,
-            __v: 0},
-        {_id: '5a422aa71b54a676234d17f8',
-            title: 'Go To Statement Considered Harmful',
-            author: 'Edsger W. Dijkstra',
-            url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-            likes: 12,
-            __v: 0}]
+  const listWithManyBlogs = [
+    {_id: '5a422aa71b54a676234d17f8',
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+      likes: 10,
+      __v: 0},
+    {_id: '5a422aa71b54a676234d17f8',
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+      likes: 0,
+      __v: 0},
+    {_id: '5a422aa71b54a676234d17f8',
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+      likes: 12,
+      __v: 0}]
   
-    test('of empty list is zero', () => {
-        const result = listHelper.totalLikes(listWithNoBlogs)
-        assert.strictEqual(result, 0)
-      })
-
-    test('when list has only one blog equals the likes of that', () => {
-      const result = listHelper.totalLikes(listWithOneBlog)
-      assert.strictEqual(result, 5)
-    })
-    test('when list has many blogs equals the likes of that', () => {
-        const result = listHelper.totalLikes(listWithManyBlogs)
-        assert.strictEqual(result, 22)
-      })
+  test('of empty list is zero', () => {
+    const result = listHelper.totalLikes(listWithNoBlogs)
+    assert.strictEqual(result, 0)
   })
+
+  test('when list has only one blog equals the likes of that', () => {
+    const result = listHelper.totalLikes(listWithOneBlog)
+    assert.strictEqual(result, 5)
+  })
+  test('when list has many blogs equals the likes of that', () => {
+    const result = listHelper.totalLikes(listWithManyBlogs)
+    assert.strictEqual(result, 22)
+  })
+})
 
 describe('favorite blog', () => {
   const listWithOneBlog = [
@@ -75,48 +75,48 @@ describe('favorite blog', () => {
 
 
   const listWithManyBlogs = [
-      {_id: '5a422aa71b54a676234d17f8',
-          title: 'Go To Statement Considered Harmful',
-          author: 'Edsger W. Dijkstra',
-          url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-          likes: 10,
-          __v: 0},
-      {_id: '5a422aa71b54a676234d17f8',
-          title: 'Go To Statement Considered Harmful',
-          author: 'Edsger W. Dijkstra',
-          url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-          likes: 0,
-          __v: 0},
-      {_id: '5a422aa71b54a676234d17f8',
-          title: 'Go To Statement Considered Harmful',
-          author: 'Edsger W. Dijkstra',
-          url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-          likes: 12,
-          __v: 0}]
+    {_id: '5a422aa71b54a676234d17f8',
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+      likes: 10,
+      __v: 0},
+    {_id: '5a422aa71b54a676234d17f8',
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+      likes: 0,
+      __v: 0},
+    {_id: '5a422aa71b54a676234d17f8',
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+      likes: 12,
+      __v: 0}]
 
-          test('of empty list is zero', () => {
-            const result = listHelper.favoriteBlog(listWithNoBlogs)
-            assert.deepStrictEqual(result, 0)
-          })
+  test('of empty list is zero', () => {
+    const result = listHelper.favoriteBlog(listWithNoBlogs)
+    assert.deepStrictEqual(result, 0)
+  })
     
-        test('when list has only one blog equals the likes of that', () => {
-          const result = listHelper.favoriteBlog(listWithOneBlog)
-          assert.deepStrictEqual(result, {
-            _id: '5a422aa71b54a676234d17f8',
-            title: 'Go To Statement Considered Harmful',
-            author: 'Edsger W. Dijkstra',
-            url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-            likes: 5,
-            __v: 0
-          })
-        })
-        test('when list has many blogs returns one of the most liked or the most liked blog', () => {
-            const result = listHelper.favoriteBlog(listWithManyBlogs)
-            assert.deepStrictEqual(result, {_id: '5a422aa71b54a676234d17f8',
-              title: 'Go To Statement Considered Harmful',
-              author: 'Edsger W. Dijkstra',
-              url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-              likes: 12,
-              __v: 0})
-          })
-      })
+  test('when list has only one blog equals the likes of that', () => {
+    const result = listHelper.favoriteBlog(listWithOneBlog)
+    assert.deepStrictEqual(result, {
+      _id: '5a422aa71b54a676234d17f8',
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+      likes: 5,
+      __v: 0
+    })
+  })
+  test('when list has many blogs returns one of the most liked or the most liked blog', () => {
+    const result = listHelper.favoriteBlog(listWithManyBlogs)
+    assert.deepStrictEqual(result, {_id: '5a422aa71b54a676234d17f8',
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+      likes: 12,
+      __v: 0})
+  })
+})
