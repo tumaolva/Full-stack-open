@@ -119,8 +119,27 @@ describe('api tests', () => {
 
     assert.strictEqual(response.body.likes, 0)        // uuden blogin likes kenttä on 0
   })
+
+  describe('blog deletion (and modifying)', () => {   // blogin muokkaus tekemättä (tehtävä 4.14*)
+
+    test('blog can be deleted', async () => {
+      const blogsAtStart = await helper.blogsInDb()   //haetaan kaikki blogit tietokannasta
+      const blogToDelete = blogsAtStart[0]            //lisätään ensimmäinen blogi muuttujaan
+    
+      await api
+        .delete(`/api/blogs/${blogToDelete.id}`)      //poistetaan blogi id:n perusteella
+        .expect(204)
+    
+      const blogsAtEnd = await helper.blogsInDb()     //haetaan uudet blogit tietokannasta
+    
+      const titles = blogsAtEnd.map(b => b.title)     //haetaan blogien titlet taulukkoon
+      assert(!titles.includes(blogToDelete.title))    //taulukko ei sisällä poistetun blogin titleä -> se on poistunut alkuperäisestä taulukosta
+    
+      assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1) //lista on yhden lyhyempi kuin ennen
+    })
+  }) 
+
   after(async () => {
     await mongoose.connection.close()
-  })
-    
+  })   
 })
