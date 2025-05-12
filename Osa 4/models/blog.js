@@ -14,6 +14,10 @@ const blogSchema = mongoose.Schema({
     type: Number,
     default: 0, 
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
 })
 blogSchema.set('toJSON', {                   // poistetaan _id ja __v kentät kun blogi haetaan tietokannasta
   transform: (document, returnedObject) => {
