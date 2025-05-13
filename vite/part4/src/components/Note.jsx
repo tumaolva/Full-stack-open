@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 const Note = ({ note, toggleImportance, deleteNote }) => {
   const label = note.important
     ? 'make not important' 
