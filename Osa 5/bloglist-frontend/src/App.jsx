@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import './index.css'
 
 const App = () => {
@@ -12,12 +13,12 @@ const App = () => {
    const [username, setUsername] = useState('') 
    const [password, setPassword] = useState('') 
    const [user, setUser] = useState(null)
-   const [newTitle, setNewTitle] = useState('')
-   const [newAuthor, setNewAuthor] = useState('')
-   const [newUrl, setNewUrl] = useState('')
+  //  const [newTitle, setNewTitle] = useState('')
+  //  const [newAuthor, setNewAuthor] = useState('')
+  //  const [newUrl, setNewUrl] = useState('')
   const [message, setMessage] = useState(null)
   const [messageType, setMessageType] = useState('')
-
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -59,35 +60,39 @@ const App = () => {
   setUser(null)
 }
 
-const addBlog = async (event) => {
-  event.preventDefault()
-  const blogObject = {
-    title: newTitle,
-    author: newAuthor,
-    url: newUrl
+const handleLike = async (id) => {
+  const blogToLike = blogs.find(b => b.id === id)
+  const updatedBlog = {
+    ...blogToLike,
+    likes: blogToLike.likes + 1,
+    user: blogToLike.user.id || blogToLike.user // send only id
   }
-  try {
-    const returnedBlog = await blogService.create(blogObject)
-    setBlogs(blogs.concat(returnedBlog))
-    setNewTitle('')
-    setNewAuthor('')
-    setNewUrl('')
-    setMessage(`blogi ${returnedBlog.title} lisätty onnistuneesti`)
-    setMessageType('success')
-    setTimeout(() => {
-      setMessage(null)
-    }, 5000)
-  } catch (error) {
-    setMessageType('error')
-    setMessage(error.response.data.error)
-    setTimeout(() => {
-      setMessage(null)
-    }, 5000)
-  }
+  const returnedBlog = await blogService.update(id, updatedBlog)
+  setBlogs(blogs.map(b => b.id !== id ? b : { ...returnedBlog, user: blogToLike.user }))
 }
+
+const addBlog =  (blogObject) => {
+  blogService
+    .create(blogObject)
+    .then(returnedBlog => {
+      setBlogs(blogs.concat(returnedBlog))
+      setMessageType('success')
+      setMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
+      blogFormRef.current.toggleVisibility()
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    })
+    .catch(error => {
+      setMessageType('error')
+      setMessage(error.response.data.error)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    })
+  }
   return (
-    <div>
-      
+    <div>     
       {!user && (
         <div>
         <h2>log in to application</h2>
@@ -103,22 +108,21 @@ const addBlog = async (event) => {
       )}
       {user && (
         <div>
-          <h2>blogs</h2>
+          <div>
+          <h1>Blogs</h1>
           <Notification message={message} type={messageType} />
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>logout</button>
-          <h2>create new</h2>
-          <BlogForm 
-             addBlog={addBlog}
-             title={newTitle}
-             author={newAuthor}
-             url={newUrl}
-             handleTitleChange={({ target }) => setNewTitle(target.value)}
-             handleAuthorChange={({ target }) => setNewAuthor(target.value)}
-             handleUrlChange={({ target }) => setNewUrl(target.value)}
-          />
+          </div>
+          <div>
+            <Togglable buttonLabel="new blog" ref={blogFormRef}>
+              <h2>create new blog</h2>
+             <BlogForm createBlog={addBlog} />
+            </Togglable>
+          </div>
+          <h2>list of blogs</h2>
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} onLike={handleLike} />
           )}
         </div>        
       )}

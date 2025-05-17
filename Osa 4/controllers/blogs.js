@@ -44,6 +44,34 @@ blogsRouter.post('/', async (request, response, next) => {
     .catch(error => next(error))
 })
 
+blogsRouter.put('/:id', async (request, response, next) => {
+  console.log('Updating blog with id:', request.params.id)
+  const body = request.body
+
+  const blog = {
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes,
+    user: body.user
+  }
+
+  try {
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      request.params.id,
+      blog,
+      { new: true, runValidators: true, context: 'query' }
+    )
+    if (updatedBlog) {
+      response.json(updatedBlog)
+    } else {
+      response.status(404).end()
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
 blogsRouter.delete('/:id', async (request, response, next) => {
   await Blog.findByIdAndDelete(request.params.id)
   console.log('blogi poistettu')
